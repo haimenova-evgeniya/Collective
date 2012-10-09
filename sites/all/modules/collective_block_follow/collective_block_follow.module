@@ -1,0 +1,208 @@
+<?php
+
+/**
+ * Implements hook_block_info() with 3 blocks
+ */
+function collective_block_follow_block_info() {
+  $blocks = array();
+  $blocks[0] = array(
+    'info' => t('Subscribe to Collection'),
+    'cache' => DRUPAL_CACHE_PER_ROLE, 
+  );
+  $blocks[1] = array(
+    'info' => t('Subscribe to Category'),
+    'cache' => DRUPAL_CACHE_PER_ROLE, 
+  );
+  $blocks[2] = array(
+    'info' => t('Subscribe to Collector'),
+    'cache' => DRUPAL_CACHE_PER_ROLE, 
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view()
+ */
+function collective_block_follow_block_view($delta = 0) {
+  global $user;
+  $uid = $user->uid;
+  switch ($delta) {
+    case 0:    
+      $result = db_select('subscriptions', 's')
+        ->fields('s')
+        ->condition('field', 'nid', '=') 
+        ->condition('value', arg(1), '=') 
+        ->condition('recipient_uid', $uid, '=')
+        ->execute()
+        ->rowCount();
+      $query = array('query' => array('node' => arg(1)));
+      if ($result == 0) {
+        $content = l('Follow this collection', 'admin/config/collective/collection/follow', $query);
+      }
+      else {
+        $content = l('Unfollow this collection', 'admin/config/collective/collection/unfollow', $query);
+      }
+      return array(
+        'subject' => t('Subscribe to Collection'),
+        'content' => $content,
+      );
+      break;
+    case 1:
+      $taxonomy = db_select('field_data_field_collection_category', 'f')
+        ->fields('f', array('field_collection_category_tid'))
+        ->condition('entity_id', arg(1), '=')
+        ->execute()
+        ->fetchAll();
+      if (count($taxonomy)) {
+        $tid = $taxonomy[0]->field_collection_category_tid;
+        $result = db_select('subscriptions', 's')
+          ->fields('s')
+          ->condition('field', 'tid', '=') 
+          ->condition('value', $tid, '=') 
+          ->condition('recipient_uid', $uid, '=')
+          ->execute()
+          ->rowCount();
+        $query = array('query' => array('node' => arg(1), 'term' => $tid));
+        if ($result == 0) {
+          $content = l('Follow this category', 'admin/config/collective/category/follow', $query);
+        }
+        else {
+          $content = l('Unfollow this category', 'admin/config/collective/category/unfollow', $query);
+        }
+        return array(
+          'subject' => t('Subscribe to Category'),
+          'content' => $content,
+        );
+      }
+      return array(
+        'subject' => t('Subscribe to Category'),
+        'content' => t('No such term in vocabulary.'),
+      );      
+      break;
+    case 2:
+      $author = db_select('node', 'n')
+        ->fields('n', array('uid'))
+        ->condition('nid', arg(1), '=')
+        ->execute()
+        ->fetchAll();
+      if (count($author)) {
+        $author_uid = $author[0]->uid;
+        $result = db_select('subscriptions', 's')
+          ->fields('s')
+          ->condition('field', 'type', '=') 
+          ->condition('value', 'collection', '=') 
+          ->condition('recipient_uid', $uid, '=')
+          ->condition('author_uid', $author_uid, '=')
+          ->execute()
+          ->rowCount();
+        $query = array('query' => array('node' => arg(1), 'user' => $author_uid));
+        if ($result == 0) {
+          $content = l('Follow this collector', 'admin/config/collective/collector/follow', $query);
+        }
+        else {
+          $content = l('Unfollow this collector', 'admin/config/collective/collector/unfollow', $query);
+        }
+        return array(
+          'subject' => t('Subscribe to Collector'),
+          'content' => $content,
+        );
+      }
+      return array(
+        'subject' => t('Subscribe to Collector'),
+        'content' => t('No such author of the collection.'),
+      );
+      break;
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_menu()
+ */
+function collective_block_follow_menu() {
+  $items = array();  
+  $items['admin/config/collective/collection/%'] = array(
+    'title' => 'Follow',
+    'description' => 'Follow the collection.',      
+    'page callback' => 'collective_follow_collection',
+    'page arguments' => array(4),
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  );  
+  $items['admin/config/collective/collector/%'] = array(
+    'title' => 'Follow',
+    'description' => 'Follow the collector.',
+    'page callback' => 'collective_follow_collector',
+    'page arguments' => array(4),
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  ); 
+  $items['admin/config/collective/category/%'] = array(
+    'title' => 'Follow',
+    'description' => 'Follow the category.',
+    'page callback' => 'collective_follow_category',
+    'page arguments' => array(4),
+    'access arguments' => array('access content'), 
+    'type' => MENU_CALLBACK,
+  ); 
+  return $items;
+}
+
+/**
+ * Implements a function - add following to collection
+ */
+function collective_follow_collection($action = 'follow') {
+  global $user;
+  /* $args = {'node', parameter, parameter's value, user id, recipient uid, send interval, update, comment}
+  */  
+  $nid = $_GET['node'];
+  $args = array('node', 'nid', $nid, -1, $user->uid, 1, TRUE, TRUE);
+  collective_follow_action($args, $action);
+  drupal_goto('node/' . $nid);
+}
+
+/**
+ * Implements a function - add following to collector
+ */
+function collective_follow_collector($action = 'follow') {
+  global $user;
+  /* $args = {'node', parameter, parameter's value, user id, recipient uid, send interval, update, comment}
+  */
+  $nid = $_GET['node'];
+  $uid = $_GET['user'];
+  $args = array('node', 'type', 'collection', $uid, $user->uid, 1, TRUE, TRUE);
+  collective_follow_action($args, $action);
+  drupal_goto('node/' . $nid);
+}
+
+/**
+ * Implements a function - add following to category
+ */
+function collective_follow_category($action = 'follow') {
+  global $user;
+  /* $args = {'node', parameter, parameter's value, user id, recipient uid, send interval, update, comment}
+  */
+  $nid = $_GET['node'];
+  $tid = $_GET['term']; 
+  $args = array('node', 'tid', $tid, -1, $user->uid, 1, TRUE, TRUE);
+  collective_follow_action($args, $action);
+  drupal_goto('node/' . $nid);
+}
+
+/**
+ * Implements a function - action with args
+ */
+function collective_follow_action($args, $action) {
+  if ($action == 'unfollow') {
+    db_delete('subscriptions')
+      ->condition('module', $args[0])
+      ->condition('field', $args[1])
+      ->condition('value', $args[2])
+      ->condition('author_uid', $args[3])
+      ->condition('recipient_uid', $args[4])
+      ->execute();
+  }
+  else {
+    call_user_func_array('subscriptions_write_subscription', $args);
+  }
+}

@@ -1,0 +1,40 @@
+<?php
+
+/**
+* Implements a function  - add reference between collections and items
+*/
+function collective_reference_node_insert($node) {		
+ /* if ($node->type == "item") {
+    dpm($node);
+  }*/
+}
+
+function collective_reference_node_view_alter(&$build) {
+  if ($build['#view_mode'] == 'full' && $build["#bundle"] == "collection") {
+    $build['links']['node']['#links']['new'] = array(
+      'title' => t('Create a new item'),
+      'href' => 'node/add/item/' . arg(1), 
+      'query' => array('destination' => 'node/' . arg(1)),
+      'attributes' => array(
+        'title' => 'Create a new item',
+      ),
+    );
+  }
+}
+
+/**
+* Implements a function of multidimensional searching
+*/
+function multidimensional_search($parents, $searched) { 
+  if (empty($searched) || empty($parents)) { 
+    return false; 
+  }   
+  foreach ($parents as $key => $value) { 
+    $exists = true; 
+    $exists = ($exists && isset($parents[$key]) && $parents[$key] == $searched); 
+    if ($exists) { 
+      return true; 
+    } 
+  }   
+  return false; 
+}

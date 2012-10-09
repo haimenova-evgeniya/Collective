@@ -1,0 +1,7 @@
+; $Id$
+name = "Collective Node Number"
+description = "Provides the ability to count node number"
+package = The Collective
+core = 7.x
+version = 7.x-1.0
+php = 5.1

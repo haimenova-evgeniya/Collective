@@ -1,0 +1,6 @@
+name = Collective Reference between collections and items
+description = Provides the ability to add a reference between collections and items
+core = 7.x
+version = 7.x-1.0
+package = The Collective
+php = 5.1

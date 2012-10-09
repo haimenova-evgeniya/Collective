@@ -1,0 +1,27 @@
+<?php
+
+/*
+ Implements hook_menu()
+*/
+function collective_config_menu() { 
+  $items = array();   
+  $items['admin/config/collective'] = array(
+    'title' => 'The Collective',
+    'description' => 'Configuration of the collective settings.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+    'position' => 'right',
+  );
+  $items['admin/config/collective/settings'] = array(
+    'title'            => 'The Collective settings',
+    'description'      => 'Configure the collective settings.',
+    'page callback'    => 'drupal_get_form',
+    //'page arguments'   => array('privatemsg_admin_settings'),
+    //'file'             => 'privatemsg.admin.inc',
+    'access arguments' => array('access administration pages'),
+    'type'             => MENU_NORMAL_ITEM,
+  ); 
+  return $items;
+}

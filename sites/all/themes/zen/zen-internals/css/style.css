@@ -1,0 +1,160 @@
+.views-field-totalcount {	
+	float: left;
+}
+
+.collective-image {
+	float:left;
+  width: 40%;
+}
+
+.collective-follow-info-stats {
+	clear: right;
+	float: left;
+  width: 60%;
+}
+
+.collective-info-stats {
+  
+}
+
+.panel-2col-stacked .panel-col-first {
+  width: 67%;
+}
+
+.panel-2col-stacked .panel-col-last {
+  width: 33%;
+}
+
+#mini-panel-following_info_stats > .panel-col-first {
+  width: 45%;
+}
+
+#mini-panel-following_info_stats > .panel-col-last {
+  width: 55%;
+}
+
+.collective-site-name {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.collective-top-main-menu > .pane-content > ul.menu{
+  float: left;
+  position: relative;
+  left: 32%;  
+}
+.collective-top-main-menu > .pane-content > ul.menu > li.leaf {
+  float:left;
+  list-style-image: none;
+  list-style-type: none;
+  padding-right: 5px;
+  position: relative;
+  right: 68%;
+}
+
+.collective-top-main-menu > .pane-content > ul.menu > li.leaf > a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.collective-top-main-menu > .pane-content > ul.menu > li.leaf > a:hover {
+  text-decoration: underline;
+}
+
+.collective-top-right-menu > .pane-content > ul.menu > li.leaf {
+  float:left;
+  list-style-image: none;
+  list-style-type: none;
+  padding-right: 5px;
+  position: relative;
+  right: 45%;
+}
+
+.collective-top-right-menu > .pane-content > ul.menu{
+  float: left;
+  position: relative;
+  left: 55%;   
+}
+
+.collective-top-right-menu  > .pane-content > ul.menu > li.leaf > a{
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+.collective-top-right-menu > .pane-content > ul.menu > li.leaf > a:hover {
+  text-decoration: underline;
+}
+
+.collective-bottom-main-menu > .pane-content > ul.menu {
+  float: left;
+  position: relative;
+  left: 50%;
+}
+.collective-bottom-main-menu > .pane-content > ul.menu > li.leaf {
+  float:left;
+  list-style-image: none;
+  list-style-type: none;
+  padding-right: 5px;
+  position: relative;
+  right: 50%;
+}
+
+.collective-bottom-main-menu > .pane-content > ul.menu > li.leaf > a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.collective-bottom-main-menu > .pane-content > ul.menu > li.leaf > a:hover {
+  text-decoration: underline;
+}
+
+
+.collective-bottom-main-menu {
+}
+
+.collective-bottom-menu {
+  clear: both;
+}
+
+.panel-col-bottom {
+  text-align: center;
+  left:50%;
+}
+.collective-bottom-menu > .pane-content > ul.menu > li.leaf {
+  float:left;
+  list-style-image: none;
+  list-style-type: none;
+  padding-right: 5px;
+  position: relative;
+  right: 50%;
+}
+
+.collective-bottom-menu > .pane-content > ul.menu {
+  float: left;
+  position: relative;
+  left: 50%;
+}
+.collective-bottom-menu > .pane-content > ul.menu > li.leaf > a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.collective-bottom-menu > .pane-content > ul.menu > li.leaf > a:hover {
+  text-decoration: underline;
+}
+
+
+ .collective-search-form{
+ }
+
+ .collective-collection-panel h2 {
+  font-size: 1.1em;
+ }
+
+ .collective-info img {
+  float: right;
+ }
+

@@ -1,0 +1,7 @@
+; $Id$
+name = "Collective Configuration Menu"
+description = "Creates the collective configuration section"
+package = The Collective
+core = 7.x
+version = 7.x-1.0
+php = 5.1

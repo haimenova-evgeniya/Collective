@@ -1,0 +1,7 @@
+; $Id$
+name = "Collective Block Follow"
+description = "Provides the ability to follow to collections, categories and collectors"
+package = The Collective
+core = 7.x
+version = 7.x-1.0
+php = 5.1

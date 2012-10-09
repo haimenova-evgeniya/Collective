@@ -1,0 +1,33 @@
+<?php
+
+/**
+* Implements hook_node_insert
+*/
+function collective_node_number_node_insert($node) {
+	$user = user_load($node->uid);
+	if ($node->type == 'collection') {
+		$user->field_user_collection_number['und'][0]['value'] = $user->field_user_collection_number['und'][0]['value'] + 1;
+	}
+	if ($node->type == 'item') {
+    $user->field_user_item_number['und'][0]['value'] = $user->field_user_item_number['und'][0]['value'] + 1;
+  }
+  user_save($user);
+}
+
+/**
+* Implements hook_node_insert
+*/
+function collective_node_number_node_delete($node) {
+  $user = user_load($node->uid);
+  if ($node->type == 'collection') {
+    if ($user->field_user_collection_number['und'][0]['value'] > 0) {
+      $user->field_user_collection_number['und'][0]['value'] = $user->field_user_collection_number['und'][0]['value'] - 1;
+      }
+  }
+  if ($node->type == 'item') {
+    if ($user->field_user_item_number['und'][0]['value'] > 0) {
+      $user->field_user_item_number['und'][0]['value'] = $user->field_user_item_number['und'][0]['value'] - 1;
+      }
+  }
+  user_save($user);
+}
